@@ -1,5 +1,6 @@
 package com.BizBlitz.login_api.services;
 
+import com.BizBlitz.login_api.exception.ResourceNotFoundException;
 import com.BizBlitz.login_api.model.Role;
 import com.BizBlitz.login_api.model.User;
 import com.BizBlitz.login_api.repository.RoleRepository;
@@ -34,8 +35,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + username));
     }
 
     public boolean checkIfUserExists(String username) {
